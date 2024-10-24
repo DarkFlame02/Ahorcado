@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <ListView fx:id="palabrasList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+   <right>
+      <VBox alignment="TOP_CENTER" prefWidth="75.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="addWordButton" mnemonicParsing="false" onAction="#onAddAction" text="Añadir" />
+            <Button fx:id="removeWordButton" mnemonicParsing="false" onAction="#onRemoveAction" text="Quitar" />
+         </children>
+      </VBox>
+   </right>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</BorderPane>
