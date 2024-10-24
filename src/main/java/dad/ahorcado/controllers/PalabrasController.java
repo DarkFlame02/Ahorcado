@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +25,7 @@ public class PalabrasController implements Initializable {
     private Button removeWordButton;
 
     @FXML
-    private BorderPane root;
+    private GridPane root;
 
     public PalabrasController() {
         try {
@@ -41,7 +42,7 @@ public class PalabrasController implements Initializable {
 
     }
 
-    public BorderPane getRoot() {
+    public GridPane getRoot() {
         return root;
     }
 

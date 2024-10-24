@@ -12,6 +12,13 @@ import java.util.ResourceBundle;
 
 public class RootController implements Initializable {
 
+    // controllers
+
+    private PartidaController partidaController = new PartidaController();
+    private PalabrasController palabrasController = new PalabrasController();
+    private PuntuacionesController puntuacionesController = new PuntuacionesController();
+
+
     @FXML
     private Tab palabraTab;
 
@@ -36,7 +43,9 @@ public class RootController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        partidaTab.setContent(partidaController.getRoot());
+        palabraTab.setContent(palabrasController.getRoot());
+        puntuacionesTab.setContent(puntuacionesController.getRoot());
     }
 
     public TabPane getRoot() {
