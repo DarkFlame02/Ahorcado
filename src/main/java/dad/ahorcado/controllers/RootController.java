@@ -1,5 +1,12 @@
 package dad.ahorcado.controllers;
 
+import javafx.beans.Observable;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,10 +21,11 @@ public class RootController implements Initializable {
 
     // controllers
 
-    private PartidaController partidaController = new PartidaController();
-    private PalabrasController palabrasController = new PalabrasController();
-    private PuntuacionesController puntuacionesController = new PuntuacionesController();
+    private final PartidaController partidaController = new PartidaController();
+    private final PalabrasController palabrasController = new PalabrasController();
+    private final PuntuacionesController puntuacionesController = new PuntuacionesController();
 
+    // view
 
     @FXML
     private Tab palabraTab;
@@ -52,6 +60,12 @@ public class RootController implements Initializable {
         return root;
     }
 
+    public ObservableList<Palabra> getPalabras() {
+        return palabras.get();
+    }
 
+    public ListProperty<Palabra> friendsProperty() {
+        return palabras;
+    }
 
 }

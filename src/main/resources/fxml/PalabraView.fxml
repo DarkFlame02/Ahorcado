@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <GridPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -22,8 +21,8 @@
       <ListView fx:id="palabrasList" prefHeight="200.0" prefWidth="200.0" />
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="1">
          <children>
-            <TextField />
-            <Button fx:id="addWordButton" mnemonicParsing="false" onAction="#onAddAction" text="Añadir" />
+            <TextField fx:id="nuevaPalabraText" />
+            <Button fx:id="addWordButton" defaultButton="true" mnemonicParsing="false" onAction="#onAddAction" text="Añadir" />
             <Button fx:id="removeWordButton" mnemonicParsing="false" onAction="#onRemoveAction" text="Quitar" />
          </children>
          <padding>

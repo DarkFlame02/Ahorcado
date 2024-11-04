@@ -27,6 +27,11 @@
     <artifactId>javafx-fxml</artifactId>
     <version>22.0.1</version>
   </dependency>
+    <dependency>
+      <groupId>org.hildan.fxgson</groupId>
+      <artifactId>fx-gson</artifactId>
+      <version>5.0.0</version>
+    </dependency>
   <dependency>
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
