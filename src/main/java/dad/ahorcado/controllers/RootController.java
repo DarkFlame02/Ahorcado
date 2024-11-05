@@ -97,7 +97,7 @@ public class RootController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ahorcado");
             alert.setHeaderText("Error");
-            alert.setContentText("No puedes dejar el nombre vacio");
+            alert.setContentText("El nombre no puede estar vacio");
             alert.show();
         }
 

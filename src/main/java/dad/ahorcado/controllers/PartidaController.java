@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -75,6 +76,8 @@ public class PartidaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // bindings
         nameLabel.textProperty().bind(name.concat(":"));
         pointsLabel.textProperty().bind(points.asString());
         guessedLetters.textProperty().bind(letrasAdivinadas);
@@ -94,10 +97,65 @@ public class PartidaController implements Initializable {
                 finalizarPartida(false);
             }
         });
+
     }
 
     public BorderPane getRoot() {
         return root;
+    }
+
+    private String ocultarPalabra() {
+
+        String letras = letrasAdivinadas.get().toLowerCase() + letrasAdivinadas.get().toUpperCase();
+
+        // Se agregan todas las versiones acentuadas de las letras adivinadas
+        if (letrasAdivinadas.get().toLowerCase().contains("a")) letras += "áÁ";
+        if (letrasAdivinadas.get().toLowerCase().contains("e")) letras += "éÉ";
+        if (letrasAdivinadas.get().toLowerCase().contains("i")) letras += "íÍ";
+        if (letrasAdivinadas.get().toLowerCase().contains("o")) letras += "óÓ";
+        if (letrasAdivinadas.get().toLowerCase().contains("u")) letras += "úüÚÜ";
+
+        String regex = letrasAdivinadas.get().isEmpty() ? "[\\wáéíóúÁÉÍÓÚñÑüÜ]" : "[^" + letras + "]";
+        return palabraOculta.get().replaceAll(regex, "_");
+    }
+
+    public void iniciarPartida(){
+        Random random = new Random();
+        int randomIndex = random.nextInt(palabrasList.size() - 1);
+        palabraOculta.set(palabrasList.get().get(randomIndex));
+        letrasAdivinadas.set("");
+        hasEnded.set(false);
+
+        fallos.set(0);
+    }
+
+    private void finalizarPartida(Boolean partidaGanada) {
+        Alert alertClose = new Alert(Alert.AlertType.CONFIRMATION);
+        alertClose.setTitle("Ahorcado");
+        alertClose.setHeaderText(partidaGanada ? "Has ganado" : "Has perdido");
+        alertClose.setContentText("¿Quieres iniciar una nueva partida?");
+        ButtonType botonAfirmativo = new ButtonType("Si");
+        ButtonType botonNegativo = new ButtonType("No" );
+        alertClose.getButtonTypes().setAll(botonNegativo , botonAfirmativo);
+
+        Optional<ButtonType> result = alertClose.showAndWait();
+        if (result.get() == botonAfirmativo){
+            iniciarPartida();
+        }
+        else if (result.get() == botonNegativo){
+            hasEnded.set(true);
+        }
+    }
+
+    @FXML
+    void onSolveAction(ActionEvent event) {
+        if (adivinarPalabra.get().equals(palabraOculta.get())){
+            points.set(points.get() + palabraOculta.get().length() + 9 - fallos.get());
+            finalizarPartida(true);
+        }
+        else {
+            fallos.set(fallos.get() + 1);
+        }
     }
 
     @FXML
@@ -119,67 +177,6 @@ public class PartidaController implements Initializable {
         }
     }
 
-    @FXML
-    void onSolveAction(ActionEvent event) {
-        if (adivinarPalabra.get().equals(palabraOculta.get())){
-            points.set(points.get() + palabraOculta.get().length() + 9 - fallos.get());
-            finalizarPartida(true);
-        }
-        else {
-            fallos.set(fallos.get() + 1);
-        }
-    }
-
-    public void iniciarPartida(){
-        if (palabrasList.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Advertencia");
-            alert.setHeaderText("No hay palabras disponibles");
-            alert.setContentText("No se encontraron palabras para iniciar el juego. Por favor, añade algunas palabras primero.");
-            alert.showAndWait();
-            return;
-        }
-
-        reiniciarPartida();
-        Random random = new Random();
-        int randomIndex = random.nextInt(palabrasList.size() - 1);
-        palabraOculta.set(palabrasList.get().get(randomIndex));
-        letrasAdivinadas.set("");
-        hasEnded.set(false);
-
-        fallos.set(0);
-    }
-
-    public void reiniciarPartida() {
-        iniciarPartida();
-    }
-
-    private String ocultarPalabra() {
-
-        String letras = letrasAdivinadas.get().toLowerCase() + letrasAdivinadas.get().toUpperCase();
-        String regex = letrasAdivinadas.get().isEmpty() ? "\\w" : "[^" + letras + "]";
-        return palabraOculta.get().replaceAll(regex, "_");
-
-    }
-
-    private void finalizarPartida(Boolean partidaGanada) {
-        Alert alertClose = new Alert(Alert.AlertType.CONFIRMATION);
-        alertClose.setTitle("Ahorcado");
-        alertClose.setHeaderText(partidaGanada ? "Has ganado" : "Has perdido");
-        alertClose.setContentText("¿Quieres iniciar una nueva partida?");
-        ButtonType botonAfirmativo = new ButtonType("Si");
-        ButtonType botonNegativo = new ButtonType("No" );
-        alertClose.getButtonTypes().setAll(botonNegativo , botonAfirmativo);
-
-        Optional<ButtonType> result = alertClose.showAndWait();
-        if (result.get() == botonAfirmativo){
-            iniciarPartida();
-        }
-        else if (result.get() == botonNegativo){
-            hasEnded.set(true);
-        }
-    }
-
     public String getName() {
         return name.get();
     }
@@ -188,8 +185,8 @@ public class PartidaController implements Initializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name.set(name);
+    public void setName(String nombre) {
+        this.name.set(nombre);
     }
 
     public int getPoints() {
@@ -200,8 +197,12 @@ public class PartidaController implements Initializable {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points.set(points);
+    public void setPoints(int puntos) {
+        this.points.set(puntos);
+    }
+
+    public boolean isHasEnded() {
+        return hasEnded.get();
     }
 
     public BooleanProperty hasEndedProperty() {

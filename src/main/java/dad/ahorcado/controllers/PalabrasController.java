@@ -58,6 +58,7 @@ public class PalabrasController implements Initializable {
     @FXML
     void onAddAction(ActionEvent event) {
         palabrasLista.add(palabras.get());
+        nuevaPalabraText.setText("");
     }
 
     @FXML
