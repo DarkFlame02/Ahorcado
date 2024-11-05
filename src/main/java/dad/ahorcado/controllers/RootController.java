@@ -56,7 +56,7 @@ public class RootController implements Initializable {
         palabraTab.setContent(palabrasController.getRoot());
         puntuacionesTab.setContent(puntuacionesController.getRoot());
 
-        partidaController.palabrasListProperty().bind(palabrasController.palabrasListProperty());
+        partidaController.palabrasListaProperty().bind(palabrasController.palabrasListProperty());
         palabraTab.disableProperty().bind(partidaController.hasEndedProperty().not());
     }
 
@@ -77,7 +77,7 @@ public class RootController implements Initializable {
         if (!nombreText.getText().isEmpty()){
             partidaTab.setContent(partidaController.getRoot());
             partidaController.setName(nombreText.getText());
-            partidaController.iniciarPartida();
+            partidaController.startGame();
 
             boolean scoreExists = false;
             for (Puntuaciones points : puntuacionesController.getPuntuaciones()){
