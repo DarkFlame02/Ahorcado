@@ -15,7 +15,7 @@ import java.nio.file.Files;
 public class AhorcadoApp extends Application {
 
     private static final File DATA_DIR = new File(System.getProperty("user.home") , ".Ahorcado");
-    private static final File PALABRAS_FILE = new File(DATA_DIR, "palabras.txt");
+        private static final File PALABRAS_FILE = new File("src/main/resources/palabras.txt");
     private static final File PUNTUACIONES_FILE = new File(DATA_DIR, "puntuaciones.json");
 
     private final Gson gson = FxGson.fullBuilder()
@@ -28,17 +28,13 @@ public class AhorcadoApp extends Application {
     public void init() throws Exception {
         super.init();
         // se lee el txt de las palabras
-        if (PALABRAS_FILE.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(PALABRAS_FILE))) {
-                String linea;
-                while ((linea = reader.readLine()) != null) {
-                    rootController.getPalabrasController().getPalabrasList().add(linea);
-                }
-            } catch (IOException e) {
-                e.printStackTrace(); // Asegúrate de manejar las excepciones correctamente
+        try (BufferedReader reader = new BufferedReader(new FileReader(PALABRAS_FILE))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                rootController.getPalabrasController().getPalabrasList().add(linea);
             }
-        } else {
-            File palabras = new File(DATA_DIR,"palabras.txt");
+        } catch (IOException e) {
+            e.printStackTrace(); // Asegúrate de manejar las excepciones correctamente
         }
 
         // se serializa el json de puntuaciones
