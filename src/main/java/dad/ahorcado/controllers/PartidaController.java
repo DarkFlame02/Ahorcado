@@ -24,15 +24,15 @@ public class PartidaController implements Initializable {
 
     // model
 
-    private final ListProperty<String> palabrasLista = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private final BooleanProperty hasEnded = new SimpleBooleanProperty(true);
-    private final IntegerProperty fallos = new SimpleIntegerProperty();
-    private final ObjectProperty<Image> hangmanImage = new SimpleObjectProperty<>();
     private final StringProperty name = new SimpleStringProperty();
     private final IntegerProperty points = new SimpleIntegerProperty();
     private final StringProperty guessWord = new SimpleStringProperty();
     private final StringProperty palabraOculta = new SimpleStringProperty("");
     private final StringProperty guessLetters = new SimpleStringProperty("");
+    private final IntegerProperty fallos = new SimpleIntegerProperty();
+    private final BooleanProperty hasEnded = new SimpleBooleanProperty(true);
+    private final ListProperty<String> palabrasLista = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ObjectProperty<Image> hangmanImage = new SimpleObjectProperty<>();
 
     // view
 

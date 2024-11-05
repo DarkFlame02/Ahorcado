@@ -19,9 +19,9 @@ public class PalabrasController implements Initializable {
 
     // model
 
-    private final ListProperty<String> palabrasLista = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final StringProperty palabras = new SimpleStringProperty();
     private final StringProperty selectedPalabra = new SimpleStringProperty();
+    private final ListProperty<String> palabrasLista = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     // view
 
