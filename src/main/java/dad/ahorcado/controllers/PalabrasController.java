@@ -1,7 +1,6 @@
 package dad.ahorcado.controllers;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +19,9 @@ public class PalabrasController implements Initializable {
 
     // model
 
-    private final ObjectProperty<Palabra> palabra = new SimpleObjectProperty<>();
+    private final ListProperty<String> palabrasLista = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final StringProperty palabras = new SimpleStringProperty();
+    private final StringProperty selectedPalabra = new SimpleStringProperty();
 
     // view
 
@@ -32,8 +33,6 @@ public class PalabrasController implements Initializable {
 
     @FXML
     private TextField nuevaPalabraText;
-
-    private ObservableList<String> palabras;
 
     public PalabrasController() {
         try {
@@ -47,9 +46,9 @@ public class PalabrasController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Inicializa la lista observable y la asocia con palabrasList
-        palabras = FXCollections.observableArrayList();
-        palabrasList.setItems(palabras);
+        palabrasList.itemsProperty().bind(palabrasLista);
+        palabras.bind(nuevaPalabraText.textProperty());
+        selectedPalabra.bind(palabrasList.getSelectionModel().selectedItemProperty());
     }
 
     public GridPane getRoot() {
@@ -58,31 +57,24 @@ public class PalabrasController implements Initializable {
 
     @FXML
     void onAddAction(ActionEvent event) {
-        String nuevaPalabra = nuevaPalabraText.getText();
-        Palabra palabra = new Palabra();
-        palabra.setPalabra(nuevaPalabra);
-        palabras.add(String.valueOf(palabra));
-        palabrasList.getSelectionModel().select(String.valueOf(palabra));
+        palabrasLista.add(palabras.get());
     }
 
     @FXML
     void onRemoveAction(ActionEvent event) {
-        String palabraSeleccionada = palabrasList.getSelectionModel().getSelectedItem();
-        if (palabraSeleccionada != null) {
-            palabras.remove(palabraSeleccionada);  // Elimina la palabra seleccionada de la lista observable
-        }
+        palabrasLista.remove(selectedPalabra.get());
     }
 
-    public Palabra getFriend() {
-        return palabra.get();
+    public ObservableList<String> getPalabrasList() {
+        return palabrasLista;  // Devolver la propiedad en lugar de llamar a get()
     }
 
-    public ObjectProperty<Palabra> friendProperty() {
-        return palabra;
+    public ListProperty<String> palabrasListProperty() {
+        return palabrasLista;
     }
 
-    public void setFriend(Palabra palabra) {
-        this.palabra.set(palabra);
+    public void setPalabrasList(ObservableList<String> palabrasList) {
+        this.palabrasLista.set(palabrasList);
     }
 
 }

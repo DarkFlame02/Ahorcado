@@ -1,17 +1,15 @@
 package dad.ahorcado.controllers;
 
-import javafx.beans.Observable;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import dad.ahorcado.model.Puntuaciones;
+import javafx.beans.property.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +24,9 @@ public class RootController implements Initializable {
     private final PuntuacionesController puntuacionesController = new PuntuacionesController();
 
     // view
+
+    @FXML
+    private TextField nombreText;
 
     @FXML
     private Tab palabraTab;
@@ -51,21 +52,55 @@ public class RootController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        partidaTab.setContent(partidaController.getRoot());
+
         palabraTab.setContent(palabrasController.getRoot());
         puntuacionesTab.setContent(puntuacionesController.getRoot());
+
+        partidaController.palabrasListProperty().bind(palabrasController.palabrasListProperty());
+        palabraTab.disableProperty().bind(partidaController.hasEndedProperty().not());
     }
 
     public TabPane getRoot() {
         return root;
     }
 
-    public ObservableList<Palabra> getPalabras() {
-        return palabras.get();
+    public PalabrasController getPalabrasController() {
+        return palabrasController;
     }
 
-    public ListProperty<Palabra> friendsProperty() {
-        return palabras;
+    public PuntuacionesController getPuntuacionesController() {
+        return puntuacionesController;
+    }
+
+    @FXML
+    void onComenzarAction(ActionEvent event) {
+        if (!nombreText.getText().isEmpty()){
+            partidaTab.setContent(partidaController.getRoot());
+            partidaController.setName(nombreText.getText());
+            partidaController.iniciarPartida();
+
+            boolean scoreExists = false;
+            for (Puntuaciones points : puntuacionesController.getPuntuaciones()){
+                if (points.getName().equals(nombreText.getText())){
+                    partidaController.nameProperty().bind(points.nameProperty());
+                    partidaController.pointsProperty().bindBidirectional(points.pointsProperty());
+                    scoreExists = true;
+                }
+            }
+            if (!scoreExists){
+                puntuacionesController.getPuntuaciones().add(new Puntuaciones(new SimpleStringProperty(nombreText.getText()) , new SimpleIntegerProperty(0)));
+                partidaController.nameProperty().bind(puntuacionesController.getPuntuaciones().get(puntuacionesController.getPuntuaciones().size() - 1).nameProperty());
+                partidaController.pointsProperty().bindBidirectional(puntuacionesController.getPuntuaciones().get(puntuacionesController.getPuntuaciones().size() - 1).pointsProperty());
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ahorcado");
+            alert.setHeaderText("Error");
+            alert.setContentText("No puedes dejar el nombre vacio");
+            alert.show();
+        }
+
     }
 
 }

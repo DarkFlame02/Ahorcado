@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <HBox alignment="CENTER" prefHeight="50.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="guessText" />
-            <Button fx:id="letterButton" mnemonicParsing="false" onAction="#onLetterAction" text="Letra" />
+            <Button fx:id="letterButton" defaultButton="true" mnemonicParsing="false" onAction="#onLetterAction" text="Letra" />
             <Button fx:id="solveButton" mnemonicParsing="false" onAction="#onSolveAction" text="Resolver" />
          </children>
       </HBox>
@@ -29,20 +29,23 @@
                <children>
                   <ImageView fx:id="hangImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/9.png" />
+                        <Image url="@../images/8.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="hiddenWord" text="Label" />
+                  <Label fx:id="hiddenWord" text="Label">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
                   <Label fx:id="guessedLetters" text="Label" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label text="Puntos" />
+                  <Label text="Score:" />
                   <HBox spacing="5.0">
                      <children>
-                        <Label fx:id="nameLabel" text="Label" />
-                        <Label fx:id="pointsLabel" text="Label" />
+                        <Label fx:id="nameLabel" text="Nombre" />
+                        <Label fx:id="pointsLabel" text="Puntos" />
                      </children>
                   </HBox>
                </children>
